@@ -1,0 +1,21 @@
+% student(Name)
+student(john).
+student(riya).
+student(amit).
+
+% teacher(Name)
+teacher(mr_smith).
+teacher(ms_anu).
+
+% subject_code(Code, Subject)
+subject_code(cs101, computer_science).
+subject_code(ma201, mathematics).
+
+% teaches(Teacher, SubjectCode)
+teaches(mr_smith, cs101).
+teaches(ms_anu, ma201).
+
+% enrolled(Student, SubjectCode)
+enrolled(john, cs101).
+enrolled(riya, ma201).
+enrolled(amit, cs101).
