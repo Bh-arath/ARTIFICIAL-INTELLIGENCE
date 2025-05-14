@@ -1,0 +1,14 @@
+% Facts: name(Name), dob(Name, DateOfBirth)
+
+% People and their DOBs
+name(john).
+dob(john, date(1990, 5, 23)).
+
+name(mary).
+dob(mary, date(1985, 12, 10)).
+
+name(alex).
+dob(alex, date(2000, 3, 15)).
+
+name(sara).
+dob(sara, date(1995, 7, 9)).
