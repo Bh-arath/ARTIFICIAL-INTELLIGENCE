@@ -1,0 +1,76 @@
+% Declare dynamic predicates for adding/removing facts during execution
+:- dynamic fact/1.
+
+% Rules: Define diseases based on symptoms
+rule(flu) :-
+    fact(fever),
+    fact(cough),
+    fact(body_ache),
+    fact(sore_throat),
+    \+ fact(flu),  % Prevent reasserting
+    assert(fact(flu)),
+    write('Flu has been diagnosed based on the symptoms.'), nl.
+
+rule(common_cold) :-
+    fact(runny_nose),
+    fact(cough),
+    fact(sneezing),
+    \+ fact(common_cold),
+    assert(fact(common_cold)),
+    write('Common cold has been diagnosed based on the symptoms.'), nl.
+
+rule(malaria) :-
+    fact(fever),
+    fact(chills),
+    fact(sweating),
+    \+ fact(malaria),
+    assert(fact(malaria)),
+    write('Malaria has been diagnosed based on the symptoms.'), nl.
+
+rule(covid19) :-
+    fact(fever),
+    fact(cough),
+    fact(shortness_of_breath),
+    fact(loss_of_taste_smell),
+    \+ fact(covid19),
+    assert(fact(covid19)),
+    write('COVID-19 has been diagnosed based on the symptoms.'), nl.
+
+% Apply all rules: forward chaining mechanism
+forward_chain :-
+    rule(flu);
+    rule(common_cold);
+    rule(malaria);
+    rule(covid19);
+    write('No more rules to apply or no matching disease.'), nl.
+
+% Get symptoms from user and assert them as facts
+get_symptoms :-
+    write('Enter symptoms one by one (type "done." to finish):'), nl,
+    read_symptom.
+
+read_symptom :-
+    read(Symptom),
+    ( Symptom == done ->
+        write('Symptoms recorded.'), nl
+    ;
+        assert(fact(Symptom)),
+        read_symptom
+    ).
+
+% Show current facts
+show_facts :-
+    write('Current facts (symptoms and diagnosis):'), nl,
+    listing(fact).
+
+% Clear all facts
+reset :-
+    retractall(fact(_)),
+    write('All facts have been cleared.'), nl.
+
+% Run the system
+diagnose :-
+    reset,
+    get_symptoms,
+    forward_chain,
+    show_facts.
