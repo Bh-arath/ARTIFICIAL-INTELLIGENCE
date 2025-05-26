@@ -1,0 +1,87 @@
+% Facts: Symptoms associated with diseases
+disease(flu) :-
+    symptom(fever),
+    symptom(cough),
+    symptom(body_ache),
+    symptom(sore_throat).
+
+disease(common_cold) :-
+    symptom(runny_nose),
+    symptom(sneezing),
+    symptom(cough).
+
+disease(malaria) :-
+    symptom(fever),
+    symptom(chills),
+    symptom(sweating),
+    symptom(headache).
+
+disease(covid19) :-
+    symptom(fever),
+    symptom(cough),
+    symptom(shortness_of_breath),
+    symptom(loss_of_taste_smell).
+
+disease(typhoid) :-
+    symptom(fever),
+    symptom(abdominal_pain),
+    symptom(headache),
+    symptom(loss_of_appetite).
+
+% Ask user for symptoms
+ask_symptoms :-
+    write('Do you have fever? (yes/no)'), nl,
+    read(Ans1), asserta(answer(fever, Ans1)),
+    
+    write('Do you have cough? (yes/no)'), nl,
+    read(Ans2), asserta(answer(cough, Ans2)),
+    
+    write('Do you have body ache? (yes/no)'), nl,
+    read(Ans3), asserta(answer(body_ache, Ans3)),
+    
+    write('Do you have sore throat? (yes/no)'), nl,
+    read(Ans4), asserta(answer(sore_throat, Ans4)),
+    
+    write('Do you have runny nose? (yes/no)'), nl,
+    read(Ans5), asserta(answer(runny_nose, Ans5)),
+    
+    write('Do you have sneezing? (yes/no)'), nl,
+    read(Ans6), asserta(answer(sneezing, Ans6)),
+    
+    write('Do you have chills? (yes/no)'), nl,
+    read(Ans7), asserta(answer(chills, Ans7)),
+    
+    write('Do you have sweating? (yes/no)'), nl,
+    read(Ans8), asserta(answer(sweating, Ans8)),
+    
+    write('Do you have headache? (yes/no)'), nl,
+    read(Ans9), asserta(answer(headache, Ans9)),
+    
+    write('Do you have shortness of breath? (yes/no)'), nl,
+    read(Ans10), asserta(answer(shortness_of_breath, Ans10)),
+    
+    write('Do you have loss of taste or smell? (yes/no)'), nl,
+    read(Ans11), asserta(answer(loss_of_taste_smell, Ans11)),
+    
+    write('Do you have abdominal pain? (yes/no)'), nl,
+    read(Ans12), asserta(answer(abdominal_pain, Ans12)),
+    
+    write('Do you have loss of appetite? (yes/no)'), nl,
+    read(Ans13), asserta(answer(loss_of_appetite, Ans13)).
+
+% Define dynamic symptom predicates based on user input
+symptom(Symptom) :-
+    answer(Symptom, yes).
+
+% Diagnose based on symptoms
+diagnose :-
+    ask_symptoms,
+    ( disease(Disease) ->
+        format('You may be suffering from ~w.~n', [Disease])
+    ;
+        write('Diagnosis inconclusive or unknown disease based on the symptoms.'), nl
+    ).
+
+% Clean up facts for another run
+reset :-
+    retractall(answer(_, _)).
