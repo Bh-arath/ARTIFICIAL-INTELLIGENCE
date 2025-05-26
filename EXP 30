@@ -1,0 +1,62 @@
+% Declare dynamic predicate for user answers
+:- dynamic known/2.
+
+% Disease rules (backward chaining)
+disease(flu) :-
+    verify(fever),
+    verify(cough),
+    verify(body_ache),
+    verify(sore_throat).
+
+disease(common_cold) :-
+    verify(runny_nose),
+    verify(sneezing),
+    verify(cough).
+
+disease(malaria) :-
+    verify(fever),
+    verify(chills),
+    verify(sweating),
+    verify(headache).
+
+disease(covid19) :-
+    verify(fever),
+    verify(cough),
+    verify(shortness_of_breath),
+    verify(loss_of_taste_smell).
+
+disease(typhoid) :-
+    verify(fever),
+    verify(abdominal_pain),
+    verify(headache),
+    verify(loss_of_appetite).
+
+% Ask the user about symptoms if not already known
+verify(Symptom) :-
+    known(Symptom, yes), !.   % Already confirmed
+
+verify(Symptom) :-
+    known(Symptom, no), !, fail.  % Already denied
+
+verify(Symptom) :-
+    ask(Symptom).
+
+% Ask the user and store the answer
+ask(Symptom) :-
+    format('Do you have ~w? (yes/no): ', [Symptom]),
+    read(Response),
+    asserta(known(Symptom, Response)),
+    Response == yes.
+
+% Clear previous answers
+reset :-
+    retractall(known(_, _)).
+
+% Start diagnosis: try to find a disease that matches
+diagnose :-
+    reset,
+    ( disease(Disease) ->
+        format('You may be suffering from ~w.~n', [Disease])
+    ;
+        write('Diagnosis could not be made based on given symptoms.'), nl
+    ).
